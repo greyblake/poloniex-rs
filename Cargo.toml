@@ -1,0 +1,8 @@
+[package]
+name = "poloniex3"
+version = "0.1.0"
+authors = ["Sergey Potapov <blake131313@gmail.com>"]
+
+[dependencies]
+reqwest = "0.7.2"
+error-chain = "*"
