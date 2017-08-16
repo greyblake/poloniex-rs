@@ -1,8 +1,7 @@
-use serde_json;
 use serde::de::{self, Deserialize};
 
-//use std::collections::HashMap;
-//type Tickers = HashMap<String, Ticker>;
+use std::collections::HashMap;
+type Tickers = HashMap<String, Ticker>;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -26,17 +25,15 @@ pub struct Ticker {
     pub quote_volume: f64
 }
 
-fn string_to_f64<'de, D>(d: D) -> Result<f64, D::Error> where D: de::Deserializer<'de>
-{
-    Ok((String::deserialize(d)?).parse().expect("Parse error"))
+fn string_to_f64<'de, D>(d: D) -> Result<f64, D::Error> where D: de::Deserializer<'de> {
+    String::deserialize(d)?.parse().map_err(de::Error::custom)
 }
-
-
 
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json;
 
     #[test]
     fn test_deserialize() {
@@ -59,5 +56,22 @@ mod tests {
         assert_eq!(ticker.percent_change, 0.023);
         assert_eq!(ticker.base_volume, 6.16);
         assert_eq!(ticker.quote_volume, 245.82);
+    }
+
+    #[test]
+    fn test_deserialize_when_number_cant_be_parsed() {
+        let json = r#"
+            {
+                "last":"0.1x",
+                "lowestAsk":"0.0258",
+                "highestBid":"0.0252",
+                "percentChange":"0.023",
+                "baseVolume":"6.16",
+                "quoteVolume":"245.82"
+            }
+        "#;
+
+        let res = serde_json::from_str::<Ticker>(json);
+        assert!(res.is_err());
     }
 }
