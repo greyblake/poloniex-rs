@@ -1,20 +1,20 @@
 use super::deserialize::{string_to_f64, string_number_to_bool};
 
 #[derive(Debug, Clone, Deserialize)]
-struct OrderBookItem {
+pub struct OrderBookItem {
     #[serde(deserialize_with = "string_to_f64")]
-    rate: f64,
-    volume: f64
+    pub rate: f64,
+    pub volume: f64
 }
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OrderBook {
-    asks: Vec<OrderBookItem>,
-    bids: Vec<OrderBookItem>,
+    pub asks: Vec<OrderBookItem>,
+    pub bids: Vec<OrderBookItem>,
     #[serde(deserialize_with = "string_number_to_bool")]
-    is_frozen: bool,
-    seq: u64
+    pub is_frozen: bool,
+    pub seq: u64
 }
 
 #[cfg(test)]
