@@ -1,8 +1,5 @@
 use serde::de::{self, Deserialize};
 
-use std::collections::HashMap;
-type Tickers = HashMap<String, Ticker>;
-
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Ticker {
