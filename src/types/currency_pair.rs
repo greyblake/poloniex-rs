@@ -1,3 +1,7 @@
+use std::fmt;
+use case::CaseExt;
+use std::ascii::AsciiExt;
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CurrencyPair {
@@ -94,4 +98,24 @@ pub enum CurrencyPair {
     XmrMaid,
     XmrNxt,
     XmrZec
+}
+
+// TODO: rework to use pattern matching
+impl fmt::Display for CurrencyPair {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let s = format!("{:?}", self).to_snake().to_ascii_uppercase();
+        write!(f, "{}", s)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json;
+
+    #[test]
+    fn test_display() {
+        let s = format!("{}", CurrencyPair::BtcEth);
+        assert_eq!(s, "BTC_ETH");
+    }
 }

@@ -1,7 +1,7 @@
 use reqwest;
 use errors::*;
 
-use types::{Ticker, CurrencyPair};
+use types::{Ticker, CurrencyPair, OrderBook};
 
 use std::collections::HashMap;
 
@@ -25,7 +25,16 @@ impl PublicClient {
             .get("https://poloniex.com/public?command=returnTicker")?
             .send()?
             .json::<Tickers>()?;
-
         Ok(tickers)
+    }
+
+    pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
+        let url = format!("https://poloniex.com/public?command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
+        let order_book =
+            self.reqwest_client
+            .get(&url)?
+            .send()?
+            .json::<OrderBook>()?;
+        Ok(order_book)
     }
 }
