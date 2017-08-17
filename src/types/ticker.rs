@@ -1,6 +1,6 @@
-use serde::de::{self, Deserialize};
+use super::deserialize::string_to_f64;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Ticker {
     #[serde(deserialize_with = "string_to_f64")]
@@ -20,10 +20,6 @@ pub struct Ticker {
 
     #[serde(deserialize_with = "string_to_f64")]
     pub quote_volume: f64
-}
-
-fn string_to_f64<'de, D>(d: D) -> Result<f64, D::Error> where D: de::Deserializer<'de> {
-    String::deserialize(d)?.parse().map_err(de::Error::custom)
 }
 
 
