@@ -51,7 +51,7 @@ impl PublicClient {
         self.get(&query)
     }
 
-    pub fn return_currencies(&self) -> Result<HashMap<String, CurrencyInfo>> {
+    pub fn return_currencies(&self) -> Result<HashMap<Currency, CurrencyInfo>> {
         self.get("command=returnCurrencies")
     }
 
