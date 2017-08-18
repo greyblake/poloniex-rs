@@ -20,50 +20,40 @@ impl PublicClient {
     }
 
     pub fn return_ticker(&self) -> Result<Tickers> {
-        let tickers =
-            self.reqwest_client
-            .get("https://poloniex.com/public?command=returnTicker")?
-            .send()?
-            .json::<Tickers>()?;
-        Ok(tickers)
+        self.get("https://poloniex.com/public?command=returnTicker")
     }
 
     // pub fn return_24_volume(&self) ->
 
     pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
         let url = format!("https://poloniex.com/public?command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
-        let order_book =
-            self.reqwest_client
-            .get(&url)?
-            .send()?
-            .json::<OrderBook>()?;
-        Ok(order_book)
+        self.get(&url)
     }
 
     //pub fn return_trade_history(&self) ->
 
     pub fn return_chart_data(&self, currency_pair: CurrencyPair, start: u64, end: u64, period: Period) -> Result<Vec<ChartDataItem>> {
         let url = format!("https://poloniex.com/public?command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
-        let chart_data =
-            self.reqwest_client
-            .get(&url)?
-            .send()?
-            .json::<Vec<ChartDataItem>>()?;
-        Ok(chart_data)
+        self.get(&url)
     }
 
     // returnCurrencies
 
 
-    // returnLoanOrders
-    //
     pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
         let url = format!("https://poloniex.com/public?command=returnLoanOrders&currency={}", currency);
-        let loan_orders =
+        self.get(&url)
+    }
+
+    fn get<'de, T>(&self, url: &str) -> Result<T>
+        where T: ::serde::de::DeserializeOwned
+        {
+
+        let data =
             self.reqwest_client
-            .get(&url)?
+            .get(url)?
             .send()?
-            .json::<LoanOrders>()?;
-        Ok(loan_orders)
+            .json::<T>()?;
+        Ok(data)
     }
 }
