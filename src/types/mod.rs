@@ -17,3 +17,6 @@ pub use self::period::Period;
 
 mod chart_data_item;
 pub use self::chart_data_item::ChartDataItem;
+
+mod loan_orders;
+pub use self::loan_orders::{LoanOrders, LoanOrder};

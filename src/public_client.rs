@@ -1,7 +1,7 @@
 use reqwest;
 use errors::*;
 
-use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem};
+use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders};
 
 use std::collections::HashMap;
 
@@ -50,5 +50,20 @@ impl PublicClient {
             .send()?
             .json::<Vec<ChartDataItem>>()?;
         Ok(chart_data)
+    }
+
+    // returnCurrencies
+
+
+    // returnLoanOrders
+    //
+    pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
+        let url = format!("https://poloniex.com/public?command=returnLoanOrders&currency={}", currency);
+        let loan_orders =
+            self.reqwest_client
+            .get(&url)?
+            .send()?
+            .json::<LoanOrders>()?;
+        Ok(loan_orders)
     }
 }

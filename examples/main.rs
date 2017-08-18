@@ -1,10 +1,7 @@
 extern crate poloniex3;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
 
 use poloniex3::PublicClient;
-use poloniex3::types::{CurrencyPair, Period};
+use poloniex3::types::{CurrencyPair, Period, Currency};
 
 fn main() {
     let client = PublicClient::new().unwrap();
@@ -18,4 +15,7 @@ fn main() {
 
     let chart_data = client.return_chart_data(CurrencyPair::BtcXmr, 1405699200, 1405717900, Period::M15).unwrap();
     println!("chart_data = {:?}\n\n", chart_data);
+
+    let loan_orders = client.return_loan_orders(Currency::Btc).unwrap();
+    println!("loan_orders = {:?}\n\n", loan_orders);
 }
