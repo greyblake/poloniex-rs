@@ -20,3 +20,12 @@ pub use self::chart_data_item::ChartDataItem;
 
 mod loan_orders;
 pub use self::loan_orders::{LoanOrders, LoanOrder};
+
+mod trade_type;
+pub use self::trade_type::TradeType;
+
+mod trade_history_item;
+pub use self::trade_history_item::TradeHistoryItem;
+
+mod currency_info;
+pub use self::currency_info::CurrencyInfo;

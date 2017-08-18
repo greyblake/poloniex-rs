@@ -1,7 +1,7 @@
 use reqwest;
 use errors::*;
 
-use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders};
+use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo};
 
 use std::collections::HashMap;
 
@@ -36,19 +36,23 @@ impl PublicClient {
         self.get(&query)
     }
 
-    //pub fn return_trade_history(&self) ->
+    pub fn return_trade_history(&self, currency_pair: CurrencyPair, start: u64, end: u64) -> Result<Vec<TradeHistoryItem>> {
+        let query = format!("command=returnTradeHistory&currencyPair={}&start={}&end={}", currency_pair, start, end);
+        self.get(&query)
+    }
 
     pub fn return_chart_data(&self, currency_pair: CurrencyPair, start: u64, end: u64, period: Period) -> Result<Vec<ChartDataItem>> {
         let query = format!("command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
         self.get(&query)
     }
 
-    // returnCurrencies
-
-
     pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
         let query = format!("command=returnLoanOrders&currency={}", currency);
         self.get(&query)
+    }
+
+    pub fn return_currencies(&self) -> Result<HashMap<String, CurrencyInfo>> {
+        self.get("command=returnCurrencies")
     }
 
     fn get<'de, T>(&self, query: &str) -> Result<T>
