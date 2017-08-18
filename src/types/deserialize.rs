@@ -1,5 +1,6 @@
 use serde::de::{self, Deserialize};
 use chrono::naive::NaiveDateTime;
+use chrono::prelude::*;
 
 pub fn string_to_f64<'de, D>(d: D) -> Result<f64, D::Error>
     where D: de::Deserializer<'de> {
@@ -21,9 +22,12 @@ pub fn number_to_bool<'de, D>(d: D) -> Result<bool, D::Error>
     Ok( num != 0)
 }
 
-pub fn string_to_naive_datetime<'de, D>(d: D) -> Result<NaiveDateTime, D::Error>
+pub fn string_to_utc_datetime<'de, D>(d: D) -> Result<DateTime<Utc>, D::Error>
     where D: de::Deserializer<'de> {
 
-    let s = String::deserialize(d)?;
-    NaiveDateTime::parse_from_str(&s, "%Y-%m-%d %H:%M:%S").map_err(de::Error::custom)
+    String::deserialize(d).and_then(|s| {
+        NaiveDateTime::parse_from_str(&s, "%Y-%m-%d %H:%M:%S")
+            .map_err(de::Error::custom)
+            .map(|naive_dt| DateTime::<Utc>::from_utc(naive_dt, Utc) )
+    })
 }

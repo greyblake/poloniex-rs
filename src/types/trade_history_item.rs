@@ -1,6 +1,6 @@
-use chrono::naive::NaiveDateTime;
+use chrono::prelude::*;
 
-use super::deserialize::{string_to_f64, string_to_naive_datetime};
+use super::deserialize::{string_to_f64, string_to_utc_datetime};
 use super::TradeType;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -11,8 +11,8 @@ pub struct TradeHistoryItem {
     #[serde(rename="tradeID")]
     pub trade_id: u64,
 
-    #[serde(deserialize_with = "string_to_naive_datetime")]
-    pub date: NaiveDateTime,
+    #[serde(deserialize_with = "string_to_utc_datetime")]
+    pub date: DateTime<Utc>,
 
     #[serde(rename="type")]
     pub trade_type: TradeType,
@@ -31,7 +31,6 @@ pub struct TradeHistoryItem {
 mod tests {
     use super::*;
     use serde_json;
-    use chrono::naive::NaiveDate;
 
     #[test]
     fn test_deserialize() {
@@ -51,7 +50,7 @@ mod tests {
 
         assert_eq!(item.global_trade_id, 2036467);
         assert_eq!(item.trade_id, 21387);
-        assert_eq!(item.date, NaiveDate::from_ymd(2014, 9, 12).and_hms(5, 21, 26));
+        assert_eq!(item.date, Utc.ymd(2014, 9, 12).and_hms(5, 21, 26));
         assert_eq!(item.trade_type, TradeType::Buy);
         assert_eq!(item.rate, 0.00008943);
         assert_eq!(item.amount, 1.27241180);
