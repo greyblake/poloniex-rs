@@ -20,7 +20,7 @@ impl PublicClient {
     }
 
     pub fn return_ticker(&self) -> Result<Tickers> {
-        self.get("https://poloniex.com/public?command=returnTicker")
+        self.get("command=returnTicker")
     }
 
 
@@ -32,32 +32,33 @@ impl PublicClient {
     //}
 
     pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
-        let url = format!("https://poloniex.com/public?command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
-        self.get(&url)
+        let query = format!("command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
+        self.get(&query)
     }
 
     //pub fn return_trade_history(&self) ->
 
     pub fn return_chart_data(&self, currency_pair: CurrencyPair, start: u64, end: u64, period: Period) -> Result<Vec<ChartDataItem>> {
-        let url = format!("https://poloniex.com/public?command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
-        self.get(&url)
+        let query = format!("command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
+        self.get(&query)
     }
 
     // returnCurrencies
 
 
     pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
-        let url = format!("https://poloniex.com/public?command=returnLoanOrders&currency={}", currency);
-        self.get(&url)
+        let query = format!("command=returnLoanOrders&currency={}", currency);
+        self.get(&query)
     }
 
-    fn get<'de, T>(&self, url: &str) -> Result<T>
-        where T: ::serde::de::DeserializeOwned
-        {
+    fn get<'de, T>(&self, query: &str) -> Result<T>
+        where T: ::serde::de::DeserializeOwned {
+
+        let url = format!("https://poloniex.com/public?{}", query);
 
         let data =
             self.reqwest_client
-            .get(url)?
+            .get(&url)?
             .send()?
             .json::<T>()?;
         Ok(data)
