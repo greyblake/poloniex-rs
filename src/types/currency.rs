@@ -1,7 +1,8 @@
 use std::fmt;
 use std::ascii::AsciiExt;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Currency {
     Amp,
     Ardr,

@@ -23,7 +23,13 @@ impl PublicClient {
         self.get("https://poloniex.com/public?command=returnTicker")
     }
 
-    // pub fn return_24_volume(&self) ->
+
+    // Currency pair keys are mixed with "totalBTC", "totalETH", etc.
+    // So it can not be parsed correctly
+    //
+    //pub fn return_24_volume(&self) -> Result<_> {
+    //    self.get("https://poloniex.com/public?command=return24hVolume")
+    //}
 
     pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
         let url = format!("https://poloniex.com/public?command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
