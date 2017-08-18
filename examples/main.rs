@@ -1,27 +1,18 @@
 extern crate poloniex3;
-extern crate reqwest;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
 
-use poloniex3::errors::*;
-
-pub struct PublicClient {
-    reqwest_client: reqwest::Client
-}
-
-
-impl PublicClient {
-    fn new() -> Result<Self> {
-        let reqwest_client = reqwest::Client::new()?;
-        let client = Self { reqwest_client };
-        Ok(client)
-    }
-
-    //pub fn return_ticker(&self) -> Result {
-    //    let url = format!("https://poloniex.com/public?command=returnTicker");
-    //    self.http_client.get(&url).send()
-    //}
-}
+use poloniex3::PublicClient;
+use poloniex3::types::CurrencyPair;
 
 fn main() {
-    let hello = 12;
-    println!("hello = {:?}", hello);
+    let client = PublicClient::new().unwrap();
+    println!("client = {:?}", client);
+
+    //let tickers = client.return_ticker().unwrap();
+    //println!("tickers = {:?}\n\n", tickers);
+
+    let order_book = client.return_order_book(CurrencyPair::BtcZec, 2).unwrap();
+    println!("order_book = {:?}", order_book);
 }

@@ -5,7 +5,6 @@ extern crate reqwest;
 extern crate serde_derive;
 extern crate serde_json;
 extern crate serde;
-extern crate case;
 
 pub mod errors;
 

@@ -1,7 +1,7 @@
 use std::fmt;
 use std::ascii::AsciiExt;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Currency {
     Amp,
     Ardr,
