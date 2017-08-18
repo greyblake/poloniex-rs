@@ -10,6 +10,11 @@ pub fn string_number_to_bool<'de, D>(d: D) -> Result<bool, D::Error> where D: de
     Ok(num != 0)
 }
 
+pub fn number_to_bool<'de, D>(d: D) -> Result<bool, D::Error> where D: de::Deserializer<'de> {
+    let num = u32::deserialize(d)?;
+    Ok( num != 0)
+}
+
 pub fn string_to_naive_datetime<'de, D>(d: D) -> Result<NaiveDateTime, D::Error>
     where D: de::Deserializer<'de> {
 
