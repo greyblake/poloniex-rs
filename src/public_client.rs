@@ -1,13 +1,16 @@
 use reqwest;
-use errors::*;
-
-use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo};
+use chrono::prelude::*;
 
 use std::collections::HashMap;
+use std::ops::Range;
+
+use errors::*;
+use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo};
+
 
 type Tickers = HashMap<CurrencyPair, Ticker>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PublicClient {
     reqwest_client: reqwest::Client
 }
@@ -23,7 +26,6 @@ impl PublicClient {
         self.get("command=returnTicker")
     }
 
-
     // Currency pair keys are mixed with "totalBTC", "totalETH", etc.
     // So it can not be parsed correctly
     //
@@ -36,12 +38,16 @@ impl PublicClient {
         self.get(&query)
     }
 
-    pub fn return_trade_history(&self, currency_pair: CurrencyPair, start: u64, end: u64) -> Result<Vec<TradeHistoryItem>> {
+    pub fn return_trade_history(&self, currency_pair: CurrencyPair, time_frame: Range<DateTime<Utc>>) -> Result<Vec<TradeHistoryItem>> {
+        let start = time_frame.start.timestamp();
+        let end = time_frame.end.timestamp();
         let query = format!("command=returnTradeHistory&currencyPair={}&start={}&end={}", currency_pair, start, end);
         self.get(&query)
     }
 
-    pub fn return_chart_data(&self, currency_pair: CurrencyPair, start: u64, end: u64, period: Period) -> Result<Vec<ChartDataItem>> {
+    pub fn return_chart_data(&self, currency_pair: CurrencyPair, period: Period, time_frame: Range<DateTime<Utc>>) -> Result<Vec<ChartDataItem>> {
+        let start = time_frame.start.timestamp();
+        let end = time_frame.end.timestamp();
         let query = format!("command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
         self.get(&query)
     }
@@ -59,7 +65,6 @@ impl PublicClient {
         where T: ::serde::de::DeserializeOwned {
 
         let url = format!("https://poloniex.com/public?{}", query);
-
         let data =
             self.reqwest_client
             .get(&url)?
