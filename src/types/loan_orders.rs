@@ -36,7 +36,13 @@ mod tests {
 
         let loan_orders: LoanOrders = serde_json::from_str(json).unwrap();
 
-        //assert_eq!(item.date, 1405699200);
-        //assert_eq!(item.high, 0.0045388, 0.00430043);
+        assert_eq!(loan_orders.offers.len(), 2);
+        assert_eq!(loan_orders.demands.len(), 0);
+
+        let offer = &loan_orders.offers[0];
+        assert_eq!(offer.rate, 0.00009400);
+        assert_eq!(offer.amount, 0.18728479);
+        assert_eq!(offer.range_min, 2);
+        assert_eq!(offer.range_max, 2);
     }
 }
