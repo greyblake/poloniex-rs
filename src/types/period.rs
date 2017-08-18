@@ -2,23 +2,23 @@ use std::fmt;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Period {
-    P5m,
-    P15m,
-    P30m,
-    P2h,
-    P4h,
-    P1d
+    M5,
+    M15,
+    M30,
+    H2,
+    H4,
+    D1
 }
 
 impl<'a> Into<i64> for &'a Period {
     fn into(self) -> i64 {
         match *self {
-            Period::P5m => 300,
-            Period::P15m => 900,
-            Period::P30m => 1800,
-            Period::P2h => 7200,
-            Period::P4h => 14400,
-            Period::P1d => 86400
+            Period::M5 => 300,
+            Period::M15 => 900,
+            Period::M30 => 1800,
+            Period::H2 => 7200,
+            Period::H4 => 14400,
+            Period::D1 => 86400
         }
     }
 }
@@ -37,11 +37,11 @@ mod tests {
 
     #[test]
     fn test_display() {
-        assert_eq!(format!("{}", P5m), "300");
-        assert_eq!(format!("{}", P15m), "900");
-        assert_eq!(format!("{}", P30m), "1800");
-        assert_eq!(format!("{}", P2h), "7200");
-        assert_eq!(format!("{}", P4h), "14400");
-        assert_eq!(format!("{}", P1d), "86400");
+        assert_eq!(format!("{}", M5), "300");
+        assert_eq!(format!("{}", M15), "900");
+        assert_eq!(format!("{}", M30), "1800");
+        assert_eq!(format!("{}", H2), "7200");
+        assert_eq!(format!("{}", H4), "14400");
+        assert_eq!(format!("{}", D1), "86400");
     }
 }

@@ -16,6 +16,6 @@ fn main() {
     let order_book = client.return_order_book(CurrencyPair::BtcZec, 2).unwrap();
     println!("order_book = {:?}\n\n", order_book);
 
-    let chart_data = client.return_chart_data(CurrencyPair::BtcXmr, 1405699200, 1405717900, Period::P15m).unwrap();
+    let chart_data = client.return_chart_data(CurrencyPair::BtcXmr, 1405699200, 1405717900, Period::M15).unwrap();
     println!("chart_data = {:?}\n\n", chart_data);
 }
