@@ -1,5 +1,8 @@
 mod deserialize;
 
+mod error_message;
+pub use self::error_message::ErrorMessage;
+
 mod currency;
 pub use self::currency::Currency;
 
@@ -33,5 +36,5 @@ pub use self::currency_info::CurrencyInfo;
 mod opened_order;
 pub use self::opened_order::OpenedOrder;
 
-mod error_message;
-pub use self::error_message::ErrorMessage;
+mod open_order;
+pub use self::open_order::OpenOrder;

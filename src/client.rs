@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 use errors::*;
 use credentials::Credentials;
-use types::{Currency, CurrencyPair, OpenedOrder};
+use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder};
 
 use helpers::parse_response;
 
@@ -55,6 +55,12 @@ impl Client {
         self.post(data)
     }
 
+    pub fn return_open_orders(&self, currency_pair: CurrencyPair) -> Result<Vec<OpenOrder>> {
+        let data = format!("command=returnOpenOrders&currencyPair={}&nonce={}", currency_pair, nonce());
+        self.post(data)
+    }
+
+
     fn post<'de, T>(&self, body: String) -> Result<T>
         where T: ::serde::de::DeserializeOwned {
 
@@ -71,10 +77,10 @@ impl Client {
         parse_response(resp)
     }
 
-    fn build_sign(&self, post_data: &str) -> String {
+    fn build_sign(&self, data: &str) -> String {
         let mut hmac = Hmac::new(Sha512::new(), self.credentials.secret.as_bytes());
-        let data = post_data.as_bytes();
-        hmac.input(data);
+        let bytes_data = data.as_bytes();
+        hmac.input(bytes_data);
         HEXLOWER.encode(hmac.result().code())
     }
 }
