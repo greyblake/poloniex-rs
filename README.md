@@ -6,26 +6,26 @@ Rust client for [Poloniex API](https://poloniex.com/support/api/).
 
 Public API:
 * [x] returnTicker
-* [ ] return24Volume
 * [x] returnOrderBook
 * [x] returnTradeHistory
 * [x] returnChartData
 * [x] returnCurrencies
 * [x] returnLoanOrders
+* [ ] return24Volume
 
 Trading API:
 * [x] returnBalances
-* [ ] returnCompleteBalances
+* [ ] *buy*
+* [ ] *sell*
+* [ ] *returnOpenOrders*
+* [ ] *cancelOrder*
+* [ ] *moveOrder*
+* [ ] *returnCompleteBalances*
 * [ ] returnDepositAddresses
 * [ ] generateNewAddress
 * [ ] returnDepositsWithdrawals
-* [ ] returnOpenOrders
 * [ ] returnTradeHistory
 * [ ] returnOrderTrades
-* [ ] buy
-* [ ] sell
-* [ ] cancelOrder
-* [ ] moveOrder
 * [ ] withdraw
 * [ ] returnFeeInfo
 * [ ] returnAvailableAccountBalances
