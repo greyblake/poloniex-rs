@@ -1,11 +1,10 @@
-extern crate poloniex3;
+extern crate poloniex;
 extern crate chrono;
 
 use chrono::prelude::*;
-use chrono::naive::NaiveDate;
 
-use poloniex3::PublicClient;
-use poloniex3::types::{CurrencyPair, Period, Currency};
+use poloniex::PublicClient;
+use poloniex::types::{CurrencyPair, Period, Currency};
 
 fn main() {
     let start = Utc.ymd(2017, 8, 18).and_hms(10, 0, 45);

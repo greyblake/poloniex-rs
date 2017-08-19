@@ -1,8 +1,8 @@
-extern crate poloniex3;
+extern crate poloniex;
 extern crate dotenv;
 
 use dotenv::dotenv;
-use poloniex3::{Credentials, Client};
+use poloniex::{Credentials, Client};
 
 use std::env;
 
