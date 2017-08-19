@@ -8,8 +8,6 @@ use std::env;
 
 fn main() {
     dotenv().unwrap();
-    //let start = Utc.ymd(2017, 8, 18).and_hms(10, 0, 45);
-    //let end = Utc.ymd(2017, 8, 18).and_hms(10, 2, 10);
 
     let credentials = Credentials::new(
         env::var("POLONIEX_KEY").expect("Fetch POLONIEX_KEY"),
