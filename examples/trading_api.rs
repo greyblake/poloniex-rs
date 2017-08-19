@@ -20,9 +20,9 @@ fn main() {
     //let balances = client.return_balances().unwrap();
     //println!("{:?}\n\n", balances);
 
-    //println!("buy()");
-    //let opened_order = client.buy(CurrencyPair::BtcEth, 0.01, 0.01).unwrap();
-    //println!("{:?}\n\n", opened_order);
+    println!("buy()");
+    let opened_order = client.buy(CurrencyPair::BtcEth, 0.01, 0.01).unwrap();
+    println!("{:?}\n\n", opened_order);
 
     //println!("sell()");
     //let opened_order = client.sell(CurrencyPair::BtcEth, 10.0, 0.01).unwrap();
@@ -35,4 +35,8 @@ fn main() {
     println!("return_all_open_orders()");
     let all_orders = client.return_all_open_orders().unwrap();
     println!("{:?}\n\n", all_orders);
+
+    println!("cancel_order()");
+    let resp = client.cancel_order(&opened_order.order_number).unwrap();
+    println!("{:?}\n\n", resp);
 }

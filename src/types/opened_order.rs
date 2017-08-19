@@ -7,8 +7,8 @@ use super::deserialize::{string_to_f64, string_to_utc_datetime};
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OpenedOrder {
-    order_number: String,
-    resulting_trades: Vec<ResultingTrade>
+    pub order_number: String,
+    pub resulting_trades: Vec<ResultingTrade>
 }
 
 #[derive(Debug, Clone, Deserialize)]

@@ -12,7 +12,7 @@ pub fn parse_response<'de, T>(mut resp: reqwest::Response) -> Result<T>
     let mut content = String::new();
     resp.read_to_string(&mut content)?;
 
-    //println!("content =\n{}\n\n", content);
+    println!("content =\n{}\n\n", content);
 
     parse_json::<T>(&content)
 }

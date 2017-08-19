@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 use errors::*;
 use credentials::Credentials;
-use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder};
+use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder, CancelOrderResponse};
 
 use helpers::parse_response;
 
@@ -65,6 +65,10 @@ impl Client {
         self.post(data)
     }
 
+    pub fn cancel_order(&self, order_number: &str) -> Result<CancelOrderResponse> {
+        let data = format!("command=cancelOrder&orderNumber={}&nonce={}", order_number, nonce());
+        self.post(data)
+    }
 
     fn post<'de, T>(&self, body: String) -> Result<T>
         where T: ::serde::de::DeserializeOwned {

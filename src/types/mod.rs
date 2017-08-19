@@ -38,3 +38,6 @@ pub use self::opened_order::OpenedOrder;
 
 mod open_order;
 pub use self::open_order::OpenOrder;
+
+mod cancel_order_response;
+pub use self::cancel_order_response::CancelOrderResponse;

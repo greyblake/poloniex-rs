@@ -22,7 +22,7 @@ Trading API:
 * [x] buy
 * [x] sell
 * [x] returnOpenOrders
-* [ ] **cancelOrder**
+* [x] cancelOrder
 * [ ] **moveOrder**
 * [ ] **returnCompleteBalances**
 * [ ] returnDepositAddresses
