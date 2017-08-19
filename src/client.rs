@@ -50,6 +50,11 @@ impl Client {
         self.post(data)
     }
 
+    pub fn sell(&self, currency_pair: CurrencyPair, rate: f64, amount: f64) -> Result<OpenedOrder> {
+        let data = format!("command=sell&currencyPair={}&rate={}&amount={}&nonce={}", currency_pair, rate, amount, nonce());
+        self.post(data)
+    }
+
     fn post<'de, T>(&self, body: String) -> Result<T>
         where T: ::serde::de::DeserializeOwned {
 

@@ -4,6 +4,10 @@ Rust client for [Poloniex API](https://poloniex.com/support/api/).
 
 ## Roadmap
 
+TODO:
+* Add public api methods to Client (use macro?)
+
+
 Public API:
 * [x] returnTicker
 * [x] returnOrderBook
@@ -16,7 +20,7 @@ Public API:
 Trading API:
 * [x] returnBalances
 * [x] buy
-* [ ] **sell**
+* [x] sell
 * [ ] **returnOpenOrders**
 * [ ] **cancelOrder**
 * [ ] **moveOrder**

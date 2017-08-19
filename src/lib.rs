@@ -21,12 +21,3 @@ pub use credentials::Credentials;
 
 mod client;
 pub use client::Client;
-
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}

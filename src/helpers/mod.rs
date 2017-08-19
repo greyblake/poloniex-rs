@@ -39,7 +39,7 @@ mod tests {
     use types::OrderBook;
 
     #[test]
-    fn test_deserialize_struct() {
+    fn test_parse_json_with_struct() {
         let json = r#"
             {
                 "asks":[],
@@ -53,7 +53,7 @@ mod tests {
     }
 
     #[test]
-    fn test_deserialize_error_message() {
+    fn test_parse_json_with_error_message() {
         let json = r#"
             {
                 "error":"Oops"

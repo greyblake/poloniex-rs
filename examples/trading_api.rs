@@ -16,9 +16,15 @@ fn main() {
     );
     let client = Client::new(credentials).unwrap();
 
-    //let balances = client.return_balances().unwrap();
-    //println!("balances = \n{:?}\n\n", balances);
+    println!("return_balances()\n");
+    let balances = client.return_balances().unwrap();
+    println!("{:?}\n\n", balances);
 
+    println!("buy()\n");
     let opened_order = client.buy(CurrencyPair::BtcEth, 0.01, 0.01).unwrap();
-    println!("BUY: \n{:?}\n\n", opened_order);
+    println!("{:?}\n\n", opened_order);
+
+    println!("sell()\n");
+    let opened_order = client.sell(CurrencyPair::BtcEth, 10.0, 0.01).unwrap();
+    println!("{:?}\n\n", opened_order);
 }
