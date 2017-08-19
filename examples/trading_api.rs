@@ -3,6 +3,7 @@ extern crate dotenv;
 
 use dotenv::dotenv;
 use poloniex::{Credentials, Client};
+use poloniex::types::*;
 
 use std::env;
 
@@ -15,6 +16,9 @@ fn main() {
     );
     let client = Client::new(credentials).unwrap();
 
-    let balances = client.return_balances().unwrap();
-    println!("balances = {:?}", balances);
+    //let balances = client.return_balances().unwrap();
+    //println!("balances = \n{:?}\n\n", balances);
+
+    let opened_order = client.buy(CurrencyPair::BtcEth, 0.01, 0.01).unwrap();
+    println!("BUY: \n{:?}\n\n", opened_order);
 }
