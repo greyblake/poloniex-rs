@@ -6,5 +6,6 @@ error_chain! {
 
     foreign_links {
         Reqwest(::reqwest::Error);
+        ParseFloat(::std::num::ParseFloatError);
     }
 }

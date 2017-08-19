@@ -38,9 +38,9 @@ impl Client {
         Ok(client)
     }
 
-    pub fn return_balances(&self) -> Result<HashMap<Currency, String>> {
+    pub fn return_balances(&self) -> Result<HashMap<Currency, f64>> {
         let body = format!("command=returnBalances&nonce={}", nonce());
-        self.post(body)
+        convert_balances(self.post(body)?)
     }
 
     fn post<'de, T>(&self, body: String) -> Result<T>
@@ -74,3 +74,11 @@ fn nonce() -> String {
 }
 
 
+fn convert_balances(input: HashMap<Currency, String>) -> Result<HashMap<Currency, f64>> {
+    let mut output: HashMap<Currency, f64> = HashMap::new();
+    for (currency, balance_str) in input {
+        let balance: f64 = balance_str.parse()?;
+        output.insert(currency, balance);
+    }
+    Ok(output)
+}
