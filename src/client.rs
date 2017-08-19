@@ -8,10 +8,9 @@ use std::collections::HashMap;
 
 use errors::*;
 use credentials::Credentials;
-use types::{Currency, CurrencyPair, OpenedOrder, ErrorMessage};
+use types::{Currency, CurrencyPair, OpenedOrder};
 
-use serde_json;
-use std::io::Read;
+use helpers::parse_response;
 
 header! {
     #[doc(hidden)]
@@ -57,33 +56,14 @@ impl Client {
         let url = "https://poloniex.com/tradingApi";
         let sign = self.build_sign(&body);
 
-        let mut resp = self.reqwest_client
+        let resp = self.reqwest_client
             .post(url)?
             .header(SignHeader(sign))
             .header(KeyHeader(self.credentials.key.to_owned()))
             .header(ContentHeader("application/x-www-form-urlencoded".to_owned()))
             .body(body)
             .send()?;
-
-        let mut content = String::new();
-        resp.read_to_string(&mut content)?;
-
-        println!("content = \n{}\n\n", content);
-
-        match serde_json::from_str::<T>(&content) {
-            Ok(data) => Ok(data),
-            Err(e) => {
-                match serde_json::from_str::<ErrorMessage>(&content) {
-                    Ok(error_message) => {
-                        let err_kind = ErrorKind::Msg(error_message.error);
-                        Err(Error::from_kind(err_kind))
-                    },
-                    Err(_) => {
-                        Err(Error::from(e))
-                    }
-                }
-            }
-        }
+        parse_response(resp)
     }
 
     fn build_sign(&self, post_data: &str) -> String {

@@ -6,7 +6,7 @@ use std::ops::Range;
 
 use errors::*;
 use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo};
-
+use helpers::parse_response;
 
 type Tickers = HashMap<CurrencyPair, Ticker>;
 
@@ -65,11 +65,7 @@ impl PublicClient {
         where T: ::serde::de::DeserializeOwned {
 
         let url = format!("https://poloniex.com/public?{}", query);
-        let data =
-            self.reqwest_client
-            .get(&url)?
-            .send()?
-            .json::<T>()?;
-        Ok(data)
+        let resp = self.reqwest_client.get(&url)?.send()?;
+        parse_response(resp)
     }
 }

@@ -16,11 +16,11 @@ Public API:
 Trading API:
 * [x] returnBalances
 * [x] buy
-* [ ] *sell*
-* [ ] *returnOpenOrders*
-* [ ] *cancelOrder*
-* [ ] *moveOrder*
-* [ ] *returnCompleteBalances*
+* [ ] **sell**
+* [ ] **returnOpenOrders**
+* [ ] **cancelOrder**
+* [ ] **moveOrder**
+* [ ] **returnCompleteBalances**
 * [ ] returnDepositAddresses
 * [ ] generateNewAddress
 * [ ] returnDepositsWithdrawals

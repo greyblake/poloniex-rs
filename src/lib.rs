@@ -9,6 +9,7 @@ extern crate time;
 extern crate crypto;
 extern crate data_encoding;
 
+mod helpers;
 pub mod errors;
 pub mod types;
 
