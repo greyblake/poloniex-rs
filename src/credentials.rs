@@ -1,7 +1,7 @@
 #[derive(Debug, Clone)]
 pub struct Credentials {
-    key: String,
-    secret: String
+    pub(crate) key: String,
+    pub(crate) secret: String
 }
 
 impl Credentials {

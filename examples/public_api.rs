@@ -11,9 +11,6 @@ fn main() {
     let start = Utc.ymd(2017, 8, 18).and_hms(10, 0, 45);
     let end = Utc.ymd(2017, 8, 18).and_hms(10, 2, 10);
 
-    let naive_dt = NaiveDate::from_ymd(2017, 8, 12).and_hms(12, 10, 20);
-    println!("naive_dt.timestamp() = {:?}", naive_dt.timestamp());
-
     let client = PublicClient::new().unwrap();
 
     let tickers = client.return_ticker().unwrap();

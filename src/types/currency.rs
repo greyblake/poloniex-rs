@@ -290,6 +290,7 @@ pub enum Currency {
     Yc,
     Yin,
     Zec,
+    Zrx,
     #[serde(rename = "eTOK")]
     Etok
 }
