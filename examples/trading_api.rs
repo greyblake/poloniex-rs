@@ -31,4 +31,8 @@ fn main() {
     println!("return_open_orders()");
     let orders = client.return_open_orders(CurrencyPair::BtcEth).unwrap();
     println!("{:?}\n\n", orders);
+
+    println!("return_all_open_orders()");
+    let all_orders = client.return_all_open_orders().unwrap();
+    println!("{:?}\n\n", all_orders);
 }

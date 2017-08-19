@@ -60,6 +60,11 @@ impl Client {
         self.post(data)
     }
 
+    pub fn return_all_open_orders(&self) -> Result<HashMap<CurrencyPair, Vec<OpenOrder>>> {
+        let data = format!("command=returnOpenOrders&currencyPair=all&nonce={}", nonce());
+        self.post(data)
+    }
+
 
     fn post<'de, T>(&self, body: String) -> Result<T>
         where T: ::serde::de::DeserializeOwned {
