@@ -29,3 +29,9 @@ pub use self::trade_history_item::TradeHistoryItem;
 
 mod currency_info;
 pub use self::currency_info::CurrencyInfo;
+
+mod opened_order;
+pub use self::opened_order::OpenedOrder;
+
+mod error_message;
+pub use self::error_message::ErrorMessage;

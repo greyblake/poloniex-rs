@@ -68,6 +68,8 @@ impl Client {
         let mut content = String::new();
         resp.read_to_string(&mut content)?;
 
+        println!("content = \n{}\n\n", content);
+
         match serde_json::from_str::<T>(&content) {
             Ok(data) => Ok(data),
             Err(e) => {

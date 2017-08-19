@@ -15,7 +15,7 @@ Public API:
 
 Trading API:
 * [x] returnBalances
-* [ ] *buy*
+* [x] buy
 * [ ] *sell*
 * [ ] *returnOpenOrders*
 * [ ] *cancelOrder*
