@@ -3,6 +3,23 @@ name = "poloniex"
 version = "0.0.1-alpha"
 authors = ["Sergey Potapov <blake131313@gmail.com>"]
 
+
+description = "Client for Poloniex crypto exchange API"
+keywords = ["poloniex", "cryptocurrency", "trading", "bitcoin", "ethereum"]
+license = "MIT"
+repository = "https://github.com/greyblake/poloniex-rs"
+homepage = "https://github.com/greyblake/poloniex-rs"
+documentation = "https://docs.rs/poloniex"
+readme = "README.md"
+categories = ["api-bindings"]
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "README.md"
+]
+
+
+
 [dependencies]
 reqwest = "0.7.2"
 hyper = "0.11.0"
