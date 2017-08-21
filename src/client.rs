@@ -10,7 +10,7 @@ use errors::*;
 use credentials::Credentials;
 use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder, CancelOrderResponse};
 use helpers::{parse_response, nonce};
-use converters::convert_balances;
+use converters::{convert_balances};
 
 header! {
     #[doc(hidden)]
@@ -26,6 +26,9 @@ header! {
     #[doc(hidden)]
     (ContentHeader, "Content-Type") => [String]
 }
+
+
+type AllOpenOrders = HashMap<CurrencyPair, Vec<OpenOrder>>;
 
 #[derive(Debug, Clone)]
 pub struct Client {
@@ -60,9 +63,16 @@ impl Client {
         self.post(data)
     }
 
-    pub fn return_all_open_orders(&self) -> Result<HashMap<CurrencyPair, Vec<OpenOrder>>> {
+    pub fn return_all_open_orders(&self) -> Result<AllOpenOrders> {
         let data = format!("command=returnOpenOrders&currencyPair=all&nonce={}", nonce());
         self.post(data)
+            // Filter out empty entries
+            .map({ |all_open_orders: AllOpenOrders|
+                all_open_orders
+                    .into_iter()
+                    .filter(|&(_, ref orders)| !orders.is_empty() )
+                    .collect()
+            })
     }
 
     pub fn cancel_order(&self, order_number: &str) -> Result<CancelOrderResponse> {
