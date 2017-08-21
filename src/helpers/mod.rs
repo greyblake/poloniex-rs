@@ -36,6 +36,12 @@ fn parse_json<'de, T>(s: &str) -> Result<T>
     }
 }
 
+pub fn nonce() -> String {
+    let current_time = ::time::get_time();
+    ((current_time.sec as i64 * 1000_000_000) + (current_time.nsec as i64)).to_string()
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -9,8 +9,8 @@ use std::collections::HashMap;
 use errors::*;
 use credentials::Credentials;
 use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder, CancelOrderResponse};
-
-use helpers::parse_response;
+use helpers::{parse_response, nonce};
+use converters::convert_balances;
 
 header! {
     #[doc(hidden)]
@@ -92,19 +92,4 @@ impl Client {
         hmac.input(bytes_data);
         HEXLOWER.encode(hmac.result().code())
     }
-}
-
-fn nonce() -> String {
-    let current_time = ::time::get_time();
-    ((current_time.sec as i64 * 1000_000_000) + (current_time.nsec as i64)).to_string()
-}
-
-
-fn convert_balances(input: HashMap<Currency, String>) -> Result<HashMap<Currency, f64>> {
-    let mut output: HashMap<Currency, f64> = HashMap::new();
-    for (currency, balance_str) in input {
-        let balance: f64 = balance_str.parse()?;
-        output.insert(currency, balance);
-    }
-    Ok(output)
 }

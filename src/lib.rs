@@ -10,6 +10,7 @@ extern crate crypto;
 extern crate data_encoding;
 
 mod helpers;
+mod converters;
 pub mod errors;
 pub mod types;
 
