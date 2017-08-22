@@ -32,14 +32,14 @@ type AllOpenOrders = HashMap<CurrencyPair, Vec<OpenOrder>>;
 
 #[derive(Debug, Clone)]
 pub struct Client {
-    reqwest_client: reqwest::Client,
+    http_client: reqwest::Client,
     credentials: Credentials
 }
 
 impl Client {
     pub fn new(credentials: Credentials) -> Result<Self> {
-        let reqwest_client = reqwest::Client::new()?;
-        let client = Self { credentials, reqwest_client };
+        let http_client = reqwest::Client::new()?;
+        let client = Self { credentials, http_client };
         Ok(client)
     }
 
@@ -86,7 +86,7 @@ impl Client {
         let url = "https://poloniex.com/tradingApi";
         let sign = self.build_sign(&body);
 
-        let resp = self.reqwest_client
+        let resp = self.http_client
             .post(url)?
             .header(SignHeader(sign))
             .header(KeyHeader(self.credentials.key.to_owned()))

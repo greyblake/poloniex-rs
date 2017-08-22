@@ -12,13 +12,13 @@ type Tickers = HashMap<CurrencyPair, Ticker>;
 
 #[derive(Debug, Clone)]
 pub struct PublicClient {
-    reqwest_client: reqwest::Client
+    http_client: reqwest::Client
 }
 
 impl PublicClient {
     pub fn new() -> Result<Self> {
-        let reqwest_client = reqwest::Client::new()?;
-        let client = Self { reqwest_client };
+        let http_client = reqwest::Client::new()?;
+        let client = Self { http_client };
         Ok(client)
     }
 
@@ -65,7 +65,7 @@ impl PublicClient {
         where T: ::serde::de::DeserializeOwned {
 
         let url = format!("https://poloniex.com/public?{}", query);
-        let resp = self.reqwest_client.get(&url)?.send()?;
+        let resp = self.http_client.get(&url)?.send()?;
         parse_response(resp)
     }
 }
