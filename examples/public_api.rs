@@ -1,16 +1,25 @@
 extern crate poloniex;
 extern crate chrono;
+extern crate reqwest;
 
 use chrono::prelude::*;
 
 use poloniex::PublicClient;
 use poloniex::types::{CurrencyPair, Period, Currency};
 
+use std::time::Duration;
+
 fn main() {
+    let http_client = reqwest::Client::builder().unwrap()
+        .timeout(Duration::from_millis(1000))
+        .build().unwrap();
+
+    let client = PublicClient::builder()
+        .http_client(http_client)
+        .build().unwrap();
+
     let start = Utc.ymd(2017, 8, 18).and_hms(10, 0, 45);
     let end = Utc.ymd(2017, 8, 18).and_hms(10, 2, 10);
-
-    let client = PublicClient::new().unwrap();
 
     let tickers = client.return_ticker().unwrap();
     println!("tickers = \n{:?}\n\n", tickers);

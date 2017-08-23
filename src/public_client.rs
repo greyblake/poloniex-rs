@@ -10,17 +10,71 @@ use helpers::parse_response;
 
 type Tickers = HashMap<CurrencyPair, Ticker>;
 
+/// `PublicClient` provides methods to make calls to Poloniex Public API.
+/// It's based on `reqwest` HTTP client library, which allows to setup timeout
+/// or proxy.
+///
+/// # Example
+/// ```
+/// use poloniex::PublicClient;
+///
+/// let client = PublicClient::new().unwrap();
+/// let tickers = client.return_ticker().unwrap();
+/// ```
 #[derive(Debug, Clone)]
 pub struct PublicClient {
     http_client: reqwest::Client
 }
 
+#[derive(Debug)]
+pub struct PublicClientBuilder {
+    http_client: Option<reqwest::Client>
+}
+
+impl PublicClientBuilder {
+    fn new() -> Self {
+        PublicClientBuilder {
+            http_client: None
+        }
+    }
+
+    pub fn http_client(mut self, http_client: reqwest::Client) -> Self {
+        self.http_client = Some(http_client);
+        self
+    }
+
+    pub fn build(self) -> Result<PublicClient> {
+        let http_client = self.http_client.unwrap_or(reqwest::Client::new()?);
+        let client = PublicClient { http_client };
+        Ok(client)
+    }
+}
+
+
 impl PublicClient {
+    /// Constructs a new client for Public API.
+    ///
+    /// # Errors
+    ///
+    /// This method fails if native TLS backend cannot be created or initialized.
+    ///
+    /// # Example
+    /// ```
+    /// use poloniex::PublicClient;
+    ///
+    /// let client = PublicClient::new().unwrap();
+    /// ```
     pub fn new() -> Result<Self> {
         let http_client = reqwest::Client::new()?;
         let client = Self { http_client };
         Ok(client)
     }
+
+    /// Creates `PublicClientBuilder` to build `PublicClient`
+    pub fn builder() -> PublicClientBuilder {
+        PublicClientBuilder::new()
+    }
+
 
     pub fn return_ticker(&self) -> Result<Tickers> {
         self.get("command=returnTicker")
