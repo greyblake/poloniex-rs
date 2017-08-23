@@ -50,8 +50,60 @@ impl PublicClientBuilder {
     }
 }
 
+macro_rules! define_public_api {
+    () => {
+        pub fn return_ticker(&self) -> Result<Tickers> {
+            self.get("command=returnTicker")
+        }
+
+        // Currency pair keys are mixed with "totalBTC", "totalETH", etc.
+        // So it can not be parsed correctly
+        //
+        //pub fn return_24_volume(&self) -> Result<_> {
+        //    self.get("https://poloniex.com/public?command=return24hVolume")
+        //}
+
+        pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
+            let query = format!("command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
+            self.get(&query)
+        }
+
+        pub fn return_trade_history(&self, currency_pair: CurrencyPair, time_frame: Range<DateTime<Utc>>) -> Result<Vec<TradeHistoryItem>> {
+            let start = time_frame.start.timestamp();
+            let end = time_frame.end.timestamp();
+            let query = format!("command=returnTradeHistory&currencyPair={}&start={}&end={}", currency_pair, start, end);
+            self.get(&query)
+        }
+
+        pub fn return_chart_data(&self, currency_pair: CurrencyPair, period: Period, time_frame: Range<DateTime<Utc>>) -> Result<Vec<ChartDataItem>> {
+            let start = time_frame.start.timestamp();
+            let end = time_frame.end.timestamp();
+            let query = format!("command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
+            self.get(&query)
+        }
+
+        pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
+            let query = format!("command=returnLoanOrders&currency={}", currency);
+            self.get(&query)
+        }
+
+        pub fn return_currencies(&self) -> Result<HashMap<Currency, CurrencyInfo>> {
+            self.get("command=returnCurrencies")
+        }
+
+        fn get<'de, T>(&self, query: &str) -> Result<T>
+            where T: ::serde::de::DeserializeOwned {
+
+            let url = format!("https://poloniex.com/public?{}", query);
+            let resp = self.http_client.get(&url)?.send()?;
+            parse_response(resp)
+        }
+    }
+}
 
 impl PublicClient {
+    define_public_api!();
+
     /// Constructs a new client for Public API.
     ///
     /// # Errors
@@ -74,52 +126,5 @@ impl PublicClient {
     pub fn builder() -> PublicClientBuilder {
         PublicClientBuilder::new()
     }
-
-
-    pub fn return_ticker(&self) -> Result<Tickers> {
-        self.get("command=returnTicker")
-    }
-
-    // Currency pair keys are mixed with "totalBTC", "totalETH", etc.
-    // So it can not be parsed correctly
-    //
-    //pub fn return_24_volume(&self) -> Result<_> {
-    //    self.get("https://poloniex.com/public?command=return24hVolume")
-    //}
-
-    pub fn return_order_book(&self, currency_pair: CurrencyPair, depth: u32) -> Result<OrderBook> {
-        let query = format!("command=returnOrderBook&currencyPair={}&depth={}", currency_pair, depth);
-        self.get(&query)
-    }
-
-    pub fn return_trade_history(&self, currency_pair: CurrencyPair, time_frame: Range<DateTime<Utc>>) -> Result<Vec<TradeHistoryItem>> {
-        let start = time_frame.start.timestamp();
-        let end = time_frame.end.timestamp();
-        let query = format!("command=returnTradeHistory&currencyPair={}&start={}&end={}", currency_pair, start, end);
-        self.get(&query)
-    }
-
-    pub fn return_chart_data(&self, currency_pair: CurrencyPair, period: Period, time_frame: Range<DateTime<Utc>>) -> Result<Vec<ChartDataItem>> {
-        let start = time_frame.start.timestamp();
-        let end = time_frame.end.timestamp();
-        let query = format!("command=returnChartData&currencyPair={}&start={}&end={}&period={}", currency_pair, start, end, period);
-        self.get(&query)
-    }
-
-    pub fn return_loan_orders(&self, currency: Currency) -> Result<LoanOrders> {
-        let query = format!("command=returnLoanOrders&currency={}", currency);
-        self.get(&query)
-    }
-
-    pub fn return_currencies(&self) -> Result<HashMap<Currency, CurrencyInfo>> {
-        self.get("command=returnCurrencies")
-    }
-
-    fn get<'de, T>(&self, query: &str) -> Result<T>
-        where T: ::serde::de::DeserializeOwned {
-
-        let url = format!("https://poloniex.com/public?{}", query);
-        let resp = self.http_client.get(&url)?.send()?;
-        parse_response(resp)
-    }
 }
+

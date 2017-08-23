@@ -14,7 +14,7 @@ mod converters;
 pub mod errors;
 pub mod types;
 
-mod public_client;
+#[macro_use] mod public_client;
 pub use public_client::PublicClient;
 
 mod credentials;

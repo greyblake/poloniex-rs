@@ -11,7 +11,7 @@ use std::time::Duration;
 
 fn main() {
     let http_client = reqwest::Client::builder().unwrap()
-        .timeout(Duration::from_millis(1000))
+        .timeout(Duration::from_millis(5000))
         .build().unwrap();
 
     let client = PublicClient::builder()

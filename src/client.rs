@@ -3,14 +3,18 @@ use crypto::hmac::Hmac;
 use crypto::mac::Mac;
 use crypto::sha2::Sha512;
 use data_encoding::HEXLOWER;
+use chrono::prelude::*;
 
 use std::collections::HashMap;
+use std::ops::Range;
 
 use errors::*;
 use credentials::Credentials;
-use types::{Currency, CurrencyPair, OpenedOrder, OpenOrder, CancelOrderResponse};
+use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo, OpenedOrder, OpenOrder, CancelOrderResponse};
 use helpers::{parse_response, nonce};
 use converters::{convert_balances};
+
+type Tickers = HashMap<CurrencyPair, Ticker>;
 
 header! {
     #[doc(hidden)]
@@ -37,6 +41,8 @@ pub struct Client {
 }
 
 impl Client {
+    define_public_api!();
+
     pub fn new(credentials: Credentials) -> Result<Self> {
         let http_client = reqwest::Client::new()?;
         let client = Self { credentials, http_client };
