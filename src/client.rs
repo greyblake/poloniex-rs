@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::ops::Range;
 
 use errors::*;
-use credentials::{Credentials, CredentialsBuilder};
+use credentials::{Credentials, CredentialsBuilder, ApiKey, ApiSecret};
 use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo, OpenedOrder, OpenOrder, CancelOrderResponse};
 use helpers::{parse_response, nonce};
 use converters::{convert_balances};
@@ -39,8 +39,8 @@ header! {
 /// use poloniex::Client;
 ///
 /// let client = Client::builder()
-///     .key("KEY".to_owned())
-///     .secret("SECRET".to_owned())
+///     .key("KEY")
+///     .secret("SECRET")
 ///     .build()
 ///     .unwrap();
 ///
@@ -65,12 +65,12 @@ impl ClientBuilder {
         Self { http_client: None, credentials_builder: CredentialsBuilder::new() }
     }
 
-    pub fn key(mut self, key: String) -> Self {
+    pub fn key<T: Into<ApiKey>>(mut self, key: T) -> Self {
         self.credentials_builder = self.credentials_builder.key(key);
         self
     }
 
-    pub fn secret(mut self, secret: String) -> Self {
+    pub fn secret<T: Into<ApiSecret>>(mut self, secret: T) -> Self {
         self.credentials_builder = self.credentials_builder.secret(secret);
         self
     }
@@ -148,7 +148,7 @@ impl Client {
         let resp = self.http_client
             .post(url)?
             .header(SignHeader(sign))
-            .header(KeyHeader(self.credentials.key.to_owned()))
+            .header(KeyHeader(self.credentials.key.0.to_owned()))
             .header(ContentHeader("application/x-www-form-urlencoded".to_owned()))
             .body(body)
             .send()?;
@@ -156,7 +156,7 @@ impl Client {
     }
 
     fn build_sign(&self, data: &str) -> String {
-        let mut hmac = Hmac::new(Sha512::new(), self.credentials.secret.as_bytes());
+        let mut hmac = Hmac::new(Sha512::new(), self.credentials.secret.0.as_bytes());
         let bytes_data = data.as_bytes();
         hmac.input(bytes_data);
         HEXLOWER.encode(hmac.result().code())
