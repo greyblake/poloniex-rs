@@ -15,6 +15,7 @@ use helpers::{parse_response, nonce};
 use converters::{convert_balances};
 
 type Tickers = HashMap<CurrencyPair, Ticker>;
+type AllOpenOrders = HashMap<CurrencyPair, Vec<OpenOrder>>;
 
 header! {
     #[doc(hidden)]
@@ -31,9 +32,6 @@ header! {
     (ContentHeader, "Content-Type") => [String]
 }
 
-
-type AllOpenOrders = HashMap<CurrencyPair, Vec<OpenOrder>>;
-
 #[derive(Debug, Clone)]
 pub struct Client {
     http_client: reqwest::Client,
@@ -41,7 +39,7 @@ pub struct Client {
 }
 
 impl Client {
-    define_public_api!();
+    define_public_api_functions!();
 
     pub fn new(credentials: Credentials) -> Result<Self> {
         let http_client = reqwest::Client::new()?;

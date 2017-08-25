@@ -50,7 +50,7 @@ impl PublicClientBuilder {
     }
 }
 
-macro_rules! define_public_api {
+macro_rules! define_public_api_functions {
     () => {
         pub fn return_ticker(&self) -> Result<Tickers> {
             self.get("command=returnTicker")
@@ -102,7 +102,7 @@ macro_rules! define_public_api {
 }
 
 impl PublicClient {
-    define_public_api!();
+    define_public_api_functions!();
 
     /// Constructs a new client for Public API.
     ///
