@@ -38,6 +38,11 @@ pub struct Client {
     credentials: Credentials
 }
 
+#[derive(Debug)]
+pub struct ClientBuilder {
+    http_client: Option<reqwest::Client>,
+}
+
 impl Client {
     define_public_api_functions!();
 
