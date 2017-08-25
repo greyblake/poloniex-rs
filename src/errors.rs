@@ -5,7 +5,6 @@ error_chain! {
         ParseJson(::serde_json::Error);
         Io(::std::io::Error);
     }
-
     errors {
         KeyMissing { description("key is missing") }
         SecretMissing { description("secret is missing") }

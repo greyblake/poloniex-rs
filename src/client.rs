@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::ops::Range;
 
 use errors::*;
-use credentials::Credentials;
+use credentials::{Credentials, CredentialsBuilder};
 use types::{Ticker, CurrencyPair, OrderBook, Period, ChartDataItem, Currency, LoanOrders, TradeHistoryItem, CurrencyInfo, OpenedOrder, OpenOrder, CancelOrderResponse};
 use helpers::{parse_response, nonce};
 use converters::{convert_balances};
@@ -32,6 +32,22 @@ header! {
     (ContentHeader, "Content-Type") => [String]
 }
 
+/// `Client` can call Trading API and Public API.
+///
+/// # Example
+/// ```
+/// use poloniex::Client;
+///
+/// let client = Client::builder()
+///     .key("KEY".to_owned())
+///     .secret("SECRET".to_owned())
+///     .build()
+///     .unwrap();
+///
+/// let tickers = client.return_ticker().unwrap();
+/// let err = client.return_balances().unwrap_err();
+/// assert_eq!(err.description(), "Invalid API key/secret pair.");
+/// ```
 #[derive(Debug, Clone)]
 pub struct Client {
     http_client: reqwest::Client,
@@ -41,7 +57,37 @@ pub struct Client {
 #[derive(Debug)]
 pub struct ClientBuilder {
     http_client: Option<reqwest::Client>,
+    credentials_builder: CredentialsBuilder
 }
+
+impl ClientBuilder {
+    pub fn new() -> Self {
+        Self { http_client: None, credentials_builder: CredentialsBuilder::new() }
+    }
+
+    pub fn key(mut self, key: String) -> Self {
+        self.credentials_builder = self.credentials_builder.key(key);
+        self
+    }
+
+    pub fn secret(mut self, secret: String) -> Self {
+        self.credentials_builder = self.credentials_builder.secret(secret);
+        self
+    }
+
+    pub fn http_client(mut self, http_client: reqwest::Client) -> Self {
+        self.http_client = Some(http_client);
+        self
+    }
+
+    pub fn build(self) -> Result<Client> {
+        let http_client = self.http_client.unwrap_or(reqwest::Client::new()?);
+        let credentials = self.credentials_builder.build()?;
+        let client = Client { http_client, credentials };
+        Ok(client)
+    }
+}
+
 
 impl Client {
     define_public_api_functions!();
@@ -50,6 +96,10 @@ impl Client {
         let http_client = reqwest::Client::new()?;
         let client = Self { credentials, http_client };
         Ok(client)
+    }
+
+    pub fn builder() -> ClientBuilder {
+        ClientBuilder::new()
     }
 
     pub fn return_balances(&self) -> Result<HashMap<Currency, f64>> {

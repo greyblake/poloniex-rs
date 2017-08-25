@@ -16,7 +16,7 @@ impl Credentials {
     }
 }
 
-
+#[derive(Debug)]
 pub struct CredentialsBuilder {
     key: Option<String>,
     secret: Option<String>
