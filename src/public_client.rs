@@ -91,7 +91,7 @@ macro_rules! define_public_api {
             self.get("command=returnCurrencies")
         }
 
-        fn get<'de, T>(&self, query: &str) -> Result<T>
+        fn get<T>(&self, query: &str) -> Result<T>
             where T: ::serde::de::DeserializeOwned {
 
             let url = format!("https://poloniex.com/public?{}", query);

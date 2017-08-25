@@ -3,7 +3,7 @@ use chrono::prelude::*;
 use super::TradeType;
 use super::deserialize::{string_to_f64, string_to_utc_datetime, number_to_bool};
 
-/// Returned by returnOpenOrders API command.
+/// Returned by `returnOpenOrders` API command.
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OpenOrder {

@@ -86,7 +86,7 @@ impl Client {
         self.post(data)
     }
 
-    fn post<'de, T>(&self, body: String) -> Result<T>
+    fn post<T>(&self, body: String) -> Result<T>
         where T: ::serde::de::DeserializeOwned {
 
         let url = "https://poloniex.com/tradingApi";

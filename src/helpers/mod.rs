@@ -6,7 +6,7 @@ use std::io::Read;
 use errors::*;
 use types::ErrorMessage;
 
-pub fn parse_response<'de, T>(mut resp: reqwest::Response) -> Result<T>
+pub fn parse_response<T>(mut resp: reqwest::Response) -> Result<T>
     where T: ::serde::de::DeserializeOwned {
 
     let mut content = String::new();
@@ -17,7 +17,7 @@ pub fn parse_response<'de, T>(mut resp: reqwest::Response) -> Result<T>
     parse_json::<T>(&content)
 }
 
-fn parse_json<'de, T>(s: &str) -> Result<T>
+fn parse_json<T>(s: &str) -> Result<T>
     where T: ::serde::de::DeserializeOwned {
 
     match serde_json::from_str::<T>(s) {
@@ -38,7 +38,7 @@ fn parse_json<'de, T>(s: &str) -> Result<T>
 
 pub fn nonce() -> String {
     let current_time = ::time::get_time();
-    ((current_time.sec as i64 * 1000_000_000) + (current_time.nsec as i64)).to_string()
+    ((current_time.sec as i64 * 1_000_000_000) + (current_time.nsec as i64)).to_string()
 }
 
 
